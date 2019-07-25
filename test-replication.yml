@@ -1,0 +1,16 @@
+---
+
+- name: replication mysql-master
+  hosts: mysql-master
+  remote_user: '{{ user_name_master }}'
+  become: true
+  
+  tasks:
+    - name: tao database demo tren mysql-master
+      mysql_db:
+        name=demo
+        state=present 
+        login_user={{ mysql_root }}
+        login_password={{ mysql_root_pass }}
+    - name: tao table trong database demo
+      command: mysql --user=root --password={{ mysql_root_pass }} --execute="CREATE TABLE demo.tb2 (id INT, data VARCHAR(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8;"

@@ -1,0 +1,92 @@
+---
+# tasks file for mysql_exporter
+- name: create the MySQL exporter group
+  group:
+    name: "{{ mysqld_exporter_group }}"
+    gid: "{{ mysqld_exporter_gid }}"
+    state: present
+    system: yes  
+
+- name: create the MySQL exporter user
+  user:
+    name: "{{ mysqld_exporter_user }}"
+    uid: "{{ mysqld_exporter_uid }}"
+    group: "{{ mysqld_exporter_group }}"
+    append: yes
+    shell: /usr/sbin/nologin
+    system: yes
+    createhome: no
+
+- name: Ensure directories exists
+  file:
+    path: "/tmp/mysqld_exporter"
+    state: directory
+    owner: "{{ mysqld_exporter_user }}"
+    group: "{{ mysqld_exporter_group }}"
+    mode: "0750"
+
+- name: download mysql_exporter
+  get_url:
+    url: https://github.com/prometheus/mysqld_exporter/releases/download/v{{ mysqld_exporter_version }}/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz
+    dest: "/tmp/mysqld_exporter"  
+    owner: "{{ mysqld_exporter_user }}"
+    group: "{{ mysqld_exporter_group }}"
+    mode: "0664"
+
+- name: unarchive file mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz
+  unarchive:
+    src: "/tmp/mysqld_exporter/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/tmp/mysqld_exporter"
+    owner: "{{ mysqld_exporter_user }}"
+    group: "{{ mysqld_exporter_group }}"
+    remote_src: yes
+
+- name: create file /root/.my.cnf for replication slave connect to master
+  template:
+    src: "{{ path_home }}/roles/mysql_exporter/templates/root-my.cnf.j2"
+    dest: "/root/.my.cnf"
+    owner: root
+    group: root
+    mode: "0600"
+  when: inventory_hostname in groups['mysql-master']
+
+- name: create MYSQL client user
+  command: mysql --user=root --password={{ mysql_root_pass }} --connect-expired-password --execute=" CREATE USER '{{ mysql_exporter_user }}'@'%' IDENTIFIED BY '{{ mysql_exporter_passwd }}' WITH MAX_USER_CONNECTIONS 10;"
+
+- name: GRANT for client user
+  command: mysql --user=root --password={{ mysql_root_pass }} --connect-expired-password --execute="GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO '{{ mysql_exporter_user }}'@'%';"
+ 
+- name: flush privileges
+  command: mysql --user=root --password={{ mysql_root_pass }} --connect-expired-password --execute="FLUSH PRIVILEGES;"
+  
+- name: create file .my.cnf
+  template:
+    src: "{{ path_home }}/roles/mysql_exporter/templates/my.cnf.j2"
+    dest: "/tmp/mysqld_exporter/.my.cnf"
+    owner: "{{ mysqld_exporter_user }}"
+    group: "{{ mysqld_exporter_group }}"
+    mode: "0600"
+
+- name: create service mysql_exporter
+  template:
+    src: "{{ path_home }}/roles/mysql_exporter/templates/mysqld_exporter.service.j2"
+    dest: "/etc/systemd/system/mysqld_exporter.service"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: enable and start service
+  systemd:
+    daemon_reload: yes
+    name: mysqld_exporter
+    state: started
+    enabled: yes
+
+- name: open port firewalld mysqld_exporter
+  firewalld:
+    port: 9104/tcp
+    permanent: yes
+    state: enabled
+    
+- name: restart firewalld
+  service: name=firewalld state=restarted

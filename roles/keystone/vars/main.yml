@@ -1,0 +1,10 @@
+---
+# vars file for keystone
+_packages: 
+  - openstack-keystone
+  - openstack-utils
+  - python-openstackclient
+  - httpd
+  - mod_wsgi
+  - nc
+...

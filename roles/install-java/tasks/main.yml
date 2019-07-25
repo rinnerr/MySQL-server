@@ -1,0 +1,14 @@
+---
+
+- name: copy file rpm of java to remote server
+  copy:
+    src: "{{ path_to_packages }}/jdk-12.0.1_linux-x64_bin.rpm"
+    dest: "{{ path_home_server }}"
+    owner: ansible
+    group: ansible
+    mode: "0644"
+
+- name: install java
+  yum:
+    name: jdk-12.0.1_linux-x64_bin.rpm
+    state: present

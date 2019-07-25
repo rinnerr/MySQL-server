@@ -1,0 +1,35 @@
+---
+
+- name: config server-id for mysql-slave
+  lineinfile:
+    path: /etc/my.cnf
+    regexp: "^server-id="
+    line: "server-id=2"
+  notify: restart-mysql
+
+- name: RESET SLAVE
+  command: mysql --user=root --password={{ mysql_root_pass }} --execute="RESET SLAVE;"
+
+- name: Check master replication status.
+  mysql_replication: mode=getmaster
+  delegate_to: "{{ master_host }}"
+  register: master
+
+- name: config replication on mysql slave.
+  mysql_replication:
+    mode: changemaster
+    master_host: "{{ master_host }}"
+    master_user: "{{ master_user_rep }}"
+    master_password: "{{ master_password_rep }}"
+    master_log_file: "{{ master.File }}"
+    master_log_pos: "{{ master.Position }}"
+    login_user: "{{ mysql_root }}"
+    login_password: "{{ mysql_root_pass }}"
+  register: _replication_conf
+
+- name: Start replication.
+  mysql_replication: 
+    mode: startslave
+    login_user: "{{ mysql_root }}"
+    login_password: "{{ mysql_root_pass }}"
+  when: _replication_conf.changed

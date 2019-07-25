@@ -1,0 +1,10 @@
+---
+
+- name: cai dat mysql
+  hosts: mysql-master
+  remote_user: server1
+  become: true
+ 
+  roles: 
+     - mysql-install
+     - mysql-config

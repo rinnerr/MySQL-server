@@ -1,0 +1,13 @@
+[Unit]
+Description=Keystone-admin
+After=network.target
+
+[Service]
+User=root
+Group=root
+Type=simple
+ExecStart=/usr/bin/keystone-wsgi-admin --port 35357
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,4 @@
+- name: import a key from url
+  rpm_key:
+    state: present
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch

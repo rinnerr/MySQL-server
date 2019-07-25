@@ -1,0 +1,61 @@
+---
+#clouds info
+cloud_name: default
+
+# defaults file for keystone
+repository_openstack_release: 'rocky'
+repository_manage_openstack_repository: true
+## System info
+keystone_system_user_name: keystone
+keystone_system_group_name: keystone
+keystone_system_shell: /bin/bash
+keystone_system_user_home: "/var/lib/{{ keystone_system_user_name }}"
+## Fernet config vars
+keystone_fernet_tokens_key_repository: "/etc/keystone/fernet-keys"
+## Credentials config vars
+keystone_credential_key_repository: /etc/keystone/credential-keys
+## Role info
+keystone_role_name: admin
+
+## Admin info
+keystone_admin_user_name: admin
+keystone_admin_tenant_name: admin
+keystone_admin_description: Admin Tenant
+keystone_auth_admin_password: keystoneauth
+## Service Type and Data
+keystone_service_setup: true
+keystone_service_region: ap-southeast-1
+keystone_service_name: keystone
+keystone_service_type: identity
+keystone_service_description: "Keystone Identity Service"
+keystone_service_tenant_name: service
+keystone_service_adminuri: http://{{ bind_address }}:35357
+keystone_service_publicuri: http://{{ bind_address }}:5000
+keystone_service_internaluri: http://{{ bind_address }}:5000
+keystone_service_internaluri_insecure: false
+keystone_service_adminuri_insecure: false
+#object store
+_objectstore_url_public: http://{{ bind_address }}:6007/v1/AUTH_%(tenant_id)s
+_objectstore_url_internal: http://{{ bind_address }}:6007/v1/AUTH_%(tenant_id)s
+_objectstore_url_admin: http://{{ bind_address }}:6007/v1
+
+#project, role, user and endpoint
+_project_name: service
+_service_catalog:
+  - name: openio-swift
+    type: 'object-store'
+    description: OpenIO Swift Object Storage Service
+_role_name: swiftoperator
+_service_role_name: admin
+_service_user_name: swift
+_service_user_password: SWIFT_PASS
+_service_endpoints:
+  - interface: "public"
+    url: "{{ _objectstore_url_public }}"
+    service: "object-store"
+  - interface: "internal"
+    url: "{{ _objectstore_url_internal }}"
+    service: "object-store"
+  - interface: "admin"
+    url: "{{ _objectstore_url_admin }}"
+    service: "object-store"

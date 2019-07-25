@@ -1,0 +1,33 @@
+---
+
+- name: delete mariadb
+  yum:
+    name={{ mariadb_packages }}
+    state=absent
+
+- name: install mysql80-community-release-el7-2.noarch.rpm
+  yum:
+    name: https://dev.mysql.com/get/mysql80-community-release-el7-2.noarch.rpm
+    state: present
+
+- name: disable mysql57-community
+  shell: yum-config-manager --disable mysql57-community
+
+- name: enable mysql80-community
+  shell: yum-config-manager --enable mysql80-community
+
+- name: install mysql-community-server.x86_64
+  yum:
+    name: mysql-community-server.x86_64
+    state: present
+
+- name: install mysql-community-devel.x86_64
+  yum:
+    name: mysql-community-devel.x86_64
+    state: present
+    
+- name: install MySQL-python.x86_64
+  yum:
+    name: MySQL-python.x86_64
+    state: present
+  register: _installed

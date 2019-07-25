@@ -1,0 +1,31 @@
+---
+
+- name: create filebeat.repo 
+  template: 
+    src: "{{ path_home }}/roles/filebeat/templates/filebeat.repo.j2"
+    dest: "/etc/yum.repos.d/filebeat.repo"
+    owner: root 
+    group: root 
+    mode: "0644"
+    
+- name: install filebeat
+  yum:
+    name: filebeat
+    state: present
+
+- name: check config
+  shell: chkconfig --add filebeat
+
+- name: edit filebeat.yml
+  template:
+    src: "{{ path_home }}/roles/filebeat/templates/filebeat.yml.j2"
+    dest: "/etc/filebeat/filebeat.yml"
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: start filebeat
+  service:
+    name: filebeat
+    state: started
+    enabled: yes

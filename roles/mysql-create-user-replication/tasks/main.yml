@@ -1,0 +1,15 @@
+---
+
+- name: reset replication master
+  command: mysql --user=root --password={{ mysql_root_pass }} --execute="RESET MASTER;"
+
+- name: create MYSQL client user for replication
+  mysql_user:
+    login_user: "{{ mysql_root }}"
+    login_password: "{{ mysql_root_pass }}"
+    name: "{{ master_user_rep }}"
+    password: "{{ master_password_rep }}"
+    priv: '*.*:REPLICATION SLAVE'
+    state: present
+    host: '%'
+...

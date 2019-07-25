@@ -1,0 +1,50 @@
+---
+
+- name: config mysql
+  template:
+    src: "{{ path_home }}/roles/mysql-config/templates/my.cnf.j2"
+    dest: "/etc/my.cnf"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: create folder save file bin_log
+  file:
+    path: /var/log/mysql
+    state: directory
+    owner: mysql
+    group: mysql
+    mode: 0755
+    setype: mysqld_db_t
+    
+- name: start mysql
+  service:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: mo port firewalld
+  firewalld:
+    port: 3306/tcp
+    permanent: yes
+    state: enabled
+
+- name: restart firewalld
+  service: name=firewalld state=restarted
+
+- name: get root password
+  shell: grep 'A temporary password is generated for root@localhost' /var/log/mysqld.log | awk -F ' ' '{print $(NF)}'
+  register: root_password
+  ignore_errors: true
+  when: _installed.changed
+
+- name: set password for account root@localhost
+  command: mysql --user=root --password={{ root_password.stdout }} --connect-expired-password --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ mysql_root_pass }}';"
+  register: _changed_passwd
+  when: 
+    - root_password.changed
+    - _installed.changed
+
+- name: config for exporter
+  command: mysql --user=root --password={{ mysql_root_pass }} --connect-expired-password --execute=" UNINSTALL COMPONENT 'file://component_validate_password';"
+  when: _changed_passwd.changed

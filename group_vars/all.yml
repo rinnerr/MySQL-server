@@ -1,0 +1,45 @@
+---
+#network
+bind_interface: "{{ ansible_default_ipv4.alias }}"
+bind_address:
+  "{{ hostvars[inventory_hostname]['ansible_' + bind_interface]['ipv4']['address'] }}"
+
+#mysql server
+user_name_master: ansible
+user_name_slave: ansible
+path_home: /home/ansible/automation/MySQL-server
+path_home_server: /home/ansible
+path_to_packages: /home/ansible/automation/packages
+mysql_root: root
+mysql_root_pass: CmrFtel@2019!1016
+master_host: 42.118.242.132
+master_user_rep: keystone_rep
+master_password_rep: Database_rep*
+keystone_user: keystone
+keystone_pass: Keystone_master*
+
+#mysqld-exporter
+mysqld_exporter_group: mysqld-exporter
+mysqld_exporter_gid: 1002
+mysqld_exporter_user: mysqld-exporter
+mysqld_exporter_uid: 1002
+mysqld_exporter_version: 0.11.0
+mysql_exporter_user: mysql_exporter #use for exporter
+mysql_exporter_passwd: Mysql_exporter* #use for exporter
+
+mariadb_packages:
+    - mariadb
+    - mariadb-server
+    - mariadb-config-10.1.20-2.el7.x86_64
+
+#filebeat
+elasticsearch_server: 42.118.242.139
+
+#user for api customer
+api-customer-user: ipcCustomer
+api-customer-pass: vT~#+jXyMkzb?9f<
+api-customer-database: ipcCustomer
+#user for api management
+api-management-user: ipcManagement
+api-management-pass: S=8]Z<96-Y3u(R@M
+api-management-database: ipc_management
