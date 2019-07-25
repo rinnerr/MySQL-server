@@ -1,53 +1,53 @@
 ---
 
-- name: install mysql and filebeat
-  hosts: mysql
-  remote_user: "{{ user_name_master }}"
-  become: true
+# - name: install mysql and filebeat
+#   hosts: mysql
+#   remote_user: "{{ user_name_master }}"
+#   become: true
 
-  pre_tasks:
-    - name: Gathering network facts
-      setup:
-        gather_subset: network
+#   pre_tasks:
+#     - name: Gathering network facts
+#       setup:
+#         gather_subset: network
 
-    - name: Gathering needed facts
-      setup:
-        gather_subset: min
-        filter: "{{ item }}"
-      with_items:
-        - ansible_hostname
-        - ansible_service_mgr
-        - ansible_distribution
-        - ansible_selinux
-        - ansible_os_family
-        - ansible_apparmor
-        - ansible_kernel
-        - ansible_env
+#     - name: Gathering needed facts
+#       setup:
+#         gather_subset: min
+#         filter: "{{ item }}"
+#       with_items:
+#         - ansible_hostname
+#         - ansible_service_mgr
+#         - ansible_distribution
+#         - ansible_selinux
+#         - ansible_os_family
+#         - ansible_apparmor
+#         - ansible_kernel
+#         - ansible_env
   
-  roles:
-    - mysql-install
-    - mysql-config
-    - install-java
-    - rpm-import
-#    - HP_exporter
-    - filebeat
-    - mysql_exporter
+#   roles:
+#     - mysql-install
+#     - mysql-config
+#     - install-java
+#     - rpm-import
+# #    - HP_exporter
+#     - filebeat
+#     - mysql_exporter
 
-- name: replication mysql-master
-  hosts: mysql-master
-  remote_user: "{{ user_name_master }}"
-  become: true
+# - name: replication mysql-master
+#   hosts: mysql-master
+#   remote_user: "{{ user_name_master }}"
+#   become: true
 
-  roles: 
-    - mysql-create-user-replication
+#   roles: 
+#     - mysql-create-user-replication
 
-- name: replication mysql-slave
-  hosts: mysql-slave
-  remote_user: "{{ user_name_slave }}"
-  become: true
+# - name: replication mysql-slave
+#   hosts: mysql-slave
+#   remote_user: "{{ user_name_slave }}"
+#   become: true
 
-  roles:
-    - mysql-slave
+#   roles:
+#     - mysql-slave
     
 - name: create api user
   hosts: mysql-master
