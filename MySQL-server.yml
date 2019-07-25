@@ -49,14 +49,14 @@
   roles:
     - mysql-slave
     
-- name: install keystone master
+- name: create api user
   hosts: mysql-master
   remote_user: "{{ user_name_master }}"
   become: true
 
   roles: 
     - create-user-api
-    
+
 # - name: install keystone master
 #   hosts: mysql-master
 #   remote_user: "{{ user_name_master }}"

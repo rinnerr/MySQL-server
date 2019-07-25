@@ -1,0 +1,36 @@
+---
+# tasks file for create-user-api
+
+- name: Create a new database for api management
+  mysql_db:
+    name: "{{ api_management_database }}"
+    state: present
+    login_user: "{{ mysql_root }}"
+    login_password: "{{ mysql_root_pass }}"
+
+- name: Create a new database for api customer
+  mysql_db:
+    name: "{{ api_customer_database }}"
+    state: present
+    login_user: "{{ mysql_root }}"
+    login_password: "{{ mysql_root_pass }}"
+
+- name: create MYSQL user for api management
+  mysql_user:
+    login_user: "{{ mysql_root }}"
+    login_password: "{{ mysql_root_pass }}"
+    name: "{{ api_management_user }}"
+    password: "{{ api_management_pass }}"
+    priv: '{{ api_management_database }}.*:ALL PRIVILEGES'
+    state: present
+    host: '%'
+
+- name: create MYSQL user for api customer
+  mysql_user:
+    login_user: "{{ mysql_root }}"
+    login_password: "{{ mysql_root_pass }}"
+    name: "{{ api_customer_user }}"
+    password: "{{ api_customer_pass }}"
+    priv: '{{ api_customer_database }}.*:ALL PRIVILEGES'
+    state: present
+    host: '%'
