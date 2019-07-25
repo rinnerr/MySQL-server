@@ -7,9 +7,9 @@ bind_address:
 #mysql server
 user_name_master: ansible
 user_name_slave: ansible
-path_home: /home/thehung/ansible-galaxy/MySQL-server
+path_home: /home/ansible/automation/MySQL-server
 path_home_server: /home/ansible
-path_to_packages: /home/thehung/ansible-galaxy/packages
+path_to_packages: /home/ansible/automation/packages
 mysql_root: root
 mysql_root_pass: CmrFtel@2019!1016
 master_host: 42.118.242.132
