@@ -43,6 +43,8 @@ relay-log=/var/log/mysql/mysql-relay-bin.log
 relay-log-index=/var/log/mysql/mysql-relay-bin.index
 #database-replication
 binlog-do-db=keystone
+binlog-do-db=ipc_customer
+binlog-do-db=ipc_management
 #loggin
 slow_query_log=1
 slow_query_log_file=/var/log/mysql/mysql-slow.log

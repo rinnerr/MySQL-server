@@ -38,7 +38,7 @@ elasticsearch_server: 42.118.242.139
 #user for api customer
 api_customer_user: ipcCustomer
 api_customer_pass: vT~#+jXyMkzb?9f<
-api_customer_database: ipcCustomer
+api_customer_database: ipc_customer
 #user for api management
 api_management_user: ipcManagement
 api_management_pass: S=8]Z<96-Y3u(R@M
