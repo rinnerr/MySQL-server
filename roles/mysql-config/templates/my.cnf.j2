@@ -30,8 +30,8 @@ log-error=/var/log/mysqld.log
 pid-file=/var/run/mysqld/mysqld.pid
 
 server-id=1
-max_connections=500
-max_user_connections=100
+max_connections=1000
+max_user_connections=500
 max_allowed_packet=16M
 #bin-log
 binlog_cache_size=16M
@@ -45,6 +45,7 @@ relay-log-index=/var/log/mysql/mysql-relay-bin.index
 binlog-do-db=keystone
 binlog-do-db=ipc_customer
 binlog-do-db=ipc_management
+binlog-do-db=ipc_voucher
 #loggin
 slow_query_log=1
 slow_query_log_file=/var/log/mysql/mysql-slow.log
