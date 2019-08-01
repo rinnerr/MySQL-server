@@ -27,10 +27,10 @@
   roles:
     - mysql-install
     - mysql-config
-    - install-java
-    - rpm-import
+#    - install-java
+#    - rpm-import
 #    - HP_exporter
-    - filebeat
+#    - filebeat
     - mysql_exporter
 
 - name: replication mysql-master
