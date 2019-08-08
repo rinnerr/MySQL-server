@@ -62,6 +62,25 @@
   remote_user: "{{ user_name_master }}"
   become: true
 
+  pre_tasks:
+    - name: Gathering network facts
+      setup:
+        gather_subset: network
+
+    - name: Gathering needed facts
+      setup:
+        gather_subset: min
+        filter: "{{ item }}"
+      with_items:
+        - ansible_hostname
+        - ansible_service_mgr
+        - ansible_distribution
+        - ansible_selinux
+        - ansible_os_family
+        - ansible_apparmor
+        - ansible_kernel
+        - ansible_env
+
   roles: 
     - keystone
      

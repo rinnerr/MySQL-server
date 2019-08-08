@@ -19,22 +19,22 @@
   retries: 5
   delay: 2
 
-- name: Create a new database with name 'keystone'
-  mysql_db:
-    name: keystone
-    state: present
-    login_user: "{{ mysql_root }}"
-    login_password: "{{ mysql_root_pass }}"
+# - name: Create a new database with name 'keystone'
+#   mysql_db:
+#     name: keystone
+#     state: present
+#     login_user: "{{ mysql_root }}"
+#     login_password: "{{ mysql_root_pass }}"
 
-- name: create MYSQL client user for keystone master
-  mysql_user:
-    login_user: "{{ mysql_root }}"
-    login_password: "{{ mysql_root_pass }}"
-    name: "{{ keystone_user }}"
-    password: "{{ keystone_pass }}"
-    priv: 'keystone.*:ALL PRIVILEGES'
-    state: present
-    host: 'localhost'
+# - name: create MYSQL client user for keystone master
+#   mysql_user:
+#     login_user: "{{ mysql_root }}"
+#     login_password: "{{ mysql_root_pass }}"
+#     name: "{{ keystone_user }}"
+#     password: "{{ keystone_pass }}"
+#     priv: 'keystone.*:ALL PRIVILEGES'
+#     state: present
+#     host: 'localhost'
     
 - name: config keystone user_stderr
   command: openstack-config --set /etc/keystone/keystone.conf DEFAULT use_stderr True
