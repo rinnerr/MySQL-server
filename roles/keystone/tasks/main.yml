@@ -42,47 +42,47 @@
 - name: config mysql database for keystone
   command: openstack-config --set /etc/keystone/keystone.conf database connection 'mysql+pymysql://keystone:{{ keystone_pass }}@127.0.0.1/keystone'
 
-- name: Check if credential keys already exist
-  stat:
-    path: "{{ keystone_credential_key_repository }}/0"
-  register: _credential_keys
+# - name: Check if credential keys already exist
+#   stat:
+#     path: "{{ keystone_credential_key_repository }}/0"
+#   register: _credential_keys
 
-- name: Create credential keys for Keystone
-  command: /usr/bin/keystone-manage credential_setup \
-                                    --keystone-user "{{ keystone_system_user_name }}" \
-                                    --keystone-group "{{ keystone_system_group_name }}"
-  register: create_credential_keys
-  when:
-    - not _credential_keys.stat.exists
+# - name: Create credential keys for Keystone
+#   command: /usr/bin/keystone-manage credential_setup \
+#                                     --keystone-user "{{ keystone_system_user_name }}" \
+#                                     --keystone-group "{{ keystone_system_group_name }}"
+#   register: create_credential_keys
+#   when:
+#     - not _credential_keys.stat.exists
 
-- name: Ensure newest key is used for credential in Keystone
-  command: /usr/bin/keystone-manage credential_migrate \
-                                    --keystone-user "{{ keystone_system_user_name }}" \
-                                    --keystone-group "{{ keystone_system_group_name }}"
-  when: create_credential_keys is skipped
+# - name: Ensure newest key is used for credential in Keystone
+#   command: /usr/bin/keystone-manage credential_migrate \
+#                                     --keystone-user "{{ keystone_system_user_name }}" \
+#                                     --keystone-group "{{ keystone_system_group_name }}"
+#   when: create_credential_keys is skipped
 
-- name: Rotate credential keys for Keystone
-  command: /usr/bin/keystone-manage credential_rotate \
-                                    --keystone-user "{{ keystone_system_user_name }}" \
-                                    --keystone-group "{{ keystone_system_group_name }}"
-  when: create_credential_keys is skipped
+# - name: Rotate credential keys for Keystone
+#   command: /usr/bin/keystone-manage credential_rotate \
+#                                     --keystone-user "{{ keystone_system_user_name }}" \
+#                                     --keystone-group "{{ keystone_system_group_name }}"
+#   when: create_credential_keys is skipped
 
-- name: Check if fernet keys already exist
-  stat:
-    path: "{{ keystone_fernet_tokens_key_repository }}/0"
-  register: _fernet_keys
+# - name: Check if fernet keys already exist
+#   stat:
+#     path: "{{ keystone_fernet_tokens_key_repository }}/0"
+#   register: _fernet_keys
 
-- name: Create fernet keys for Keystone
-  command: /usr/bin/keystone-manage fernet_setup \
-                                    --keystone-user "{{ keystone_system_user_name }}" \
-                                    --keystone-group "{{ keystone_system_group_name }}"
-  when: not _fernet_keys.stat.exists
+# - name: Create fernet keys for Keystone
+#   command: /usr/bin/keystone-manage fernet_setup \
+#                                     --keystone-user "{{ keystone_system_user_name }}" \
+#                                     --keystone-group "{{ keystone_system_group_name }}"
+#   when: not _fernet_keys.stat.exists
 
-- name: Rotate fernet keys for Keystone
-  command: /usr/bin/keystone-manage fernet_rotate \
-                                    --keystone-user "{{ keystone_system_user_name }}" \
-                                    --keystone-group "{{ keystone_system_group_name }}"
-  when: _fernet_keys.stat.exists
+# - name: Rotate fernet keys for Keystone
+#   command: /usr/bin/keystone-manage fernet_rotate \
+#                                     --keystone-user "{{ keystone_system_user_name }}" \
+#                                     --keystone-group "{{ keystone_system_group_name }}"
+#   when: _fernet_keys.stat.exists
 
 # - name: Keystone db-sync
 #   command: /usr/bin/keystone-manage db_sync
