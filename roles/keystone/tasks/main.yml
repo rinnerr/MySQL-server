@@ -1,5 +1,5 @@
 ---
-tasks file for keystone
+#tasks file for keystone
 - name: "Configure Openstack {{ repository_openstack_release }} release repository"
   package:
     name: "centos-release-openstack-{{ repository_openstack_release }}"
