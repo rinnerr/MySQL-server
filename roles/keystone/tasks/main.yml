@@ -1,5 +1,5 @@
 ---
-#tasks file for keystone
+tasks file for keystone
 - name: "Configure Openstack {{ repository_openstack_release }} release repository"
   package:
     name: "centos-release-openstack-{{ repository_openstack_release }}"
@@ -105,13 +105,13 @@
   retries: 5
   delay: 10
 
-- name: create service keystone-admin
-  template:
-    src: "{{ path_home }}/roles/keystone/templates/keystone-admin.service.j2"
-    dest: "/etc/systemd/system/keystone-admin.service"
-    owner: root
-    group: root
-    mode: "0644"
+# - name: create service keystone-admin
+#   template:
+#     src: "{{ path_home }}/roles/keystone/templates/keystone-admin.service.j2"
+#     dest: "/etc/systemd/system/keystone-admin.service"
+#     owner: root
+#     group: root
+#     mode: "0644"
 
 - name: enable and start service
   systemd:
@@ -135,110 +135,110 @@
   retries: 12
   delay: 5
 
-- name: Add default role  #create role
-  shell: openstack role create "{{ _role_name }}"
-  environment:
-    OS_IDENTITY_API_VERSION: "3"  
-    OS_AUTH_URL: "http://{{ bind_address }}:35357"
-    OS_USER_DOMAIN_ID: "default"
-    OS_PROJECT_DOMAIN_ID: "default"
-    OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
-    OS_USERNAME: "{{ keystone_admin_user_name }}"
-    OS_PASSWORD: "{{ keystone_auth_admin_password }}"
-  register: add_service
-  when:
-    - _role_name is defined
-  until: add_service is success
-  retries: 2
-  delay: 10
+# - name: Add default role  #create role
+#   shell: openstack role create "{{ _role_name }}"
+#   environment:
+#     OS_IDENTITY_API_VERSION: "3"  
+#     OS_AUTH_URL: "http://{{ bind_address }}:35357"
+#     OS_USER_DOMAIN_ID: "default"
+#     OS_PROJECT_DOMAIN_ID: "default"
+#     OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
+#     OS_USERNAME: "{{ keystone_admin_user_name }}"
+#     OS_PASSWORD: "{{ keystone_auth_admin_password }}"
+#   register: add_service
+#   when:
+#     - _role_name is defined
+#   until: add_service is success
+#   retries: 2
+#   delay: 10
 
-- name: Add service project #create project
-  shell: openstack project create "{{ _project_name }}"
-  environment:
-    OS_IDENTITY_API_VERSION: "3"  
-    OS_AUTH_URL: "http://{{ bind_address }}:35357"
-    OS_USER_DOMAIN_ID: "default"
-    OS_PROJECT_DOMAIN_ID: "default"
-    OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
-    OS_USERNAME: "{{ keystone_admin_user_name }}"
-    OS_PASSWORD: "{{ keystone_auth_admin_password }}"
-  register: add_service
-  when:
-    - _project_name is defined
-  until: add_service is success
-  retries: 2
-  delay: 10
+# - name: Add service project #create project
+#   shell: openstack project create "{{ _project_name }}"
+#   environment:
+#     OS_IDENTITY_API_VERSION: "3"  
+#     OS_AUTH_URL: "http://{{ bind_address }}:35357"
+#     OS_USER_DOMAIN_ID: "default"
+#     OS_PROJECT_DOMAIN_ID: "default"
+#     OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
+#     OS_USERNAME: "{{ keystone_admin_user_name }}"
+#     OS_PASSWORD: "{{ keystone_auth_admin_password }}"
+#   register: add_service
+#   when:
+#     - _project_name is defined
+#   until: add_service is success
+#   retries: 2
+#   delay: 10
 
-- name: Add service user #create user
-  shell: openstack user create --password "{{ _service_user_password }}" --project "{{ _project_name }}" "{{ _service_user_name }}"
-  environment:
-    OS_IDENTITY_API_VERSION: "3"  
-    OS_AUTH_URL: "http://{{ bind_address }}:35357"
-    OS_USER_DOMAIN_ID: "default"
-    OS_PROJECT_DOMAIN_ID: "default"
-    OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
-    OS_USERNAME: "{{ keystone_admin_user_name }}"
-    OS_PASSWORD: "{{ keystone_auth_admin_password }}"
-  register: add_service
-  when:
-    - _service_user_name is defined
-    - _service_user_password is defined
-  until: add_service is success
-  retries: 2
-  delay: 10
-  no_log: True
+# - name: Add service user #create user
+#   shell: openstack user create --password "{{ _service_user_password }}" --project "{{ _project_name }}" "{{ _service_user_name }}"
+#   environment:
+#     OS_IDENTITY_API_VERSION: "3"  
+#     OS_AUTH_URL: "http://{{ bind_address }}:35357"
+#     OS_USER_DOMAIN_ID: "default"
+#     OS_PROJECT_DOMAIN_ID: "default"
+#     OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
+#     OS_USERNAME: "{{ keystone_admin_user_name }}"
+#     OS_PASSWORD: "{{ keystone_auth_admin_password }}"
+#   register: add_service
+#   when:
+#     - _service_user_name is defined
+#     - _service_user_password is defined
+#   until: add_service is success
+#   retries: 2
+#   delay: 10
+#   no_log: True
 
-- name: Add service user to admin role
-  shell: openstack role add --user "{{ _service_user_name }}" --project "{{ _project_name }}" "{{ _service_role_name }}"
-  environment:
-    OS_IDENTITY_API_VERSION: "3"  
-    OS_AUTH_URL: "http://{{ bind_address }}:35357"
-    OS_USER_DOMAIN_ID: "default"
-    OS_PROJECT_DOMAIN_ID: "default"
-    OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
-    OS_USERNAME: "{{ keystone_admin_user_name }}"
-    OS_PASSWORD: "{{ keystone_auth_admin_password }}"
-  register: add_service
-  when:
-    - _service_user_name is defined
-    - _service_role_name is defined
-  until: add_service is success
-  retries: 2
-  delay: 10
+# - name: Add service user to admin role
+#   shell: openstack role add --user "{{ _service_user_name }}" --project "{{ _project_name }}" "{{ _service_role_name }}"
+#   environment:
+#     OS_IDENTITY_API_VERSION: "3"  
+#     OS_AUTH_URL: "http://{{ bind_address }}:35357"
+#     OS_USER_DOMAIN_ID: "default"
+#     OS_PROJECT_DOMAIN_ID: "default"
+#     OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
+#     OS_USERNAME: "{{ keystone_admin_user_name }}"
+#     OS_PASSWORD: "{{ keystone_auth_admin_password }}"
+#   register: add_service
+#   when:
+#     - _service_user_name is defined
+#     - _service_role_name is defined
+#   until: add_service is success
+#   retries: 2
+#   delay: 10
 
-- name: Add services to the keystone service catalog #create service
-  shell: openstack service create --name "{{ item.name }}" --description "{{ item.description }}" --enable "{{ item.type }}"
-  environment:
-    OS_IDENTITY_API_VERSION: "3"  
-    OS_AUTH_URL: "http://{{ bind_address }}:35357"
-    OS_USER_DOMAIN_ID: "default"
-    OS_PROJECT_DOMAIN_ID: "default"
-    OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
-    OS_USERNAME: "{{ keystone_admin_user_name }}"
-    OS_PASSWORD: "{{ keystone_auth_admin_password }}"
-  register: add_service
-  with_items: "{{ _service_catalog }}"
-  when: _service_catalog is defined
-  until: add_service is success
-  retries: 2
-  delay: 10
+# - name: Add services to the keystone service catalog #create service
+#   shell: openstack service create --name "{{ item.name }}" --description "{{ item.description }}" --enable "{{ item.type }}"
+#   environment:
+#     OS_IDENTITY_API_VERSION: "3"  
+#     OS_AUTH_URL: "http://{{ bind_address }}:35357"
+#     OS_USER_DOMAIN_ID: "default"
+#     OS_PROJECT_DOMAIN_ID: "default"
+#     OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
+#     OS_USERNAME: "{{ keystone_admin_user_name }}"
+#     OS_PASSWORD: "{{ keystone_auth_admin_password }}"
+#   register: add_service
+#   with_items: "{{ _service_catalog }}"
+#   when: _service_catalog is defined
+#   until: add_service is success
+#   retries: 2
+#   delay: 10
 
-- name: Add endpoints to keystone endpoint catalog
-  shell: openstack endpoint create --region "{{ keystone_service_region }}" "{{ item.service }}" "{{ item.interface }}" "{{ item.url }}"
-  environment:
-    OS_IDENTITY_API_VERSION: "3"  
-    OS_AUTH_URL: "http://{{ bind_address }}:35357"
-    OS_USER_DOMAIN_ID: "default"
-    OS_PROJECT_DOMAIN_ID: "default"
-    OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
-    OS_USERNAME: "{{ keystone_admin_user_name }}"
-    OS_PASSWORD: "{{ keystone_auth_admin_password }}"
-  register: add_service
-  until: add_service is success
-  retries: 2
-  delay: 10
-  with_items: "{{ _service_endpoints }}"
-  when: _service_endpoints is defined
+# - name: Add endpoints to keystone endpoint catalog
+#   shell: openstack endpoint create --region "{{ keystone_service_region }}" "{{ item.service }}" "{{ item.interface }}" "{{ item.url }}"
+#   environment:
+#     OS_IDENTITY_API_VERSION: "3"  
+#     OS_AUTH_URL: "http://{{ bind_address }}:35357"
+#     OS_USER_DOMAIN_ID: "default"
+#     OS_PROJECT_DOMAIN_ID: "default"
+#     OS_PROJECT_NAME: "{{ keystone_admin_tenant_name }}"
+#     OS_USERNAME: "{{ keystone_admin_user_name }}"
+#     OS_PASSWORD: "{{ keystone_auth_admin_password }}"
+#   register: add_service
+#   until: add_service is success
+#   retries: 2
+#   delay: 10
+#   with_items: "{{ _service_endpoints }}"
+#   when: _service_endpoints is defined
 
 - name: create service keystone-public
   template:
