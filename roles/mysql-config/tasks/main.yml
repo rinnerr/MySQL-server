@@ -23,14 +23,14 @@
     state: started
     enabled: yes
 
-- name: mo port firewalld
-  firewalld:
-    port: 3306/tcp
-    permanent: yes
-    state: enabled
+# - name: mo port firewalld
+#   firewalld:
+#     port: 3306/tcp
+#     permanent: yes
+#     state: enabled
 
-- name: restart firewalld
-  service: name=firewalld state=restarted
+# - name: restart firewalld
+#   service: name=firewalld state=restarted
 
 - name: get root password
   shell: grep 'A temporary password is generated for root@localhost' /var/log/mysqld.log | awk -F ' ' '{print $(NF)}'

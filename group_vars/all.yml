@@ -20,9 +20,9 @@ keystone_pass: Keystone_master*
 
 #mysqld-exporter
 mysqld_exporter_group: mysqld-exporter
-mysqld_exporter_gid: 1002
+mysqld_exporter_gid: 1005
 mysqld_exporter_user: mysqld-exporter
-mysqld_exporter_uid: 1002
+mysqld_exporter_uid: 1005
 mysqld_exporter_version: 0.11.0
 mysql_exporter_user: mysql_exporter #use for exporter
 mysql_exporter_passwd: Mysql_exporter* #use for exporter
