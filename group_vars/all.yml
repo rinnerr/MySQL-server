@@ -32,6 +32,8 @@ mariadb_packages:
     - mariadb-server
     - mariadb-config-10.1.20-2.el7.x86_64
     - mariadb101u-libs
+    - mariadb101u-config
+    - mariadb101u-common
 
 #filebeat
 elasticsearch_server: 42.118.242.139
