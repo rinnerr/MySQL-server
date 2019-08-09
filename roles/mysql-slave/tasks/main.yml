@@ -15,6 +15,18 @@
   delegate_to: "{{ master_host }}"
   register: master
 
+# - name: config replication on mysql slave.
+#   mysql_replication:
+#     mode: changemaster
+#     master_host: "{{ master_host }}"
+#     master_user: "{{ master_user_rep }}"
+#     master_password: "{{ master_password_rep }}"
+#     master_log_file: "{{ master.File }}"
+#     master_log_pos: "{{ master.Position }}"
+#     login_user: "{{ mysql_root }}"
+#     login_password: "{{ mysql_root_pass }}"
+#   register: _replication_conf
+
 - name: config replication on mysql slave.
   mysql_replication:
     mode: changemaster
@@ -22,7 +34,7 @@
     master_user: "{{ master_user_rep }}"
     master_password: "{{ master_password_rep }}"
     master_log_file: "{{ master.File }}"
-    master_log_pos: "{{ master.Position }}"
+    master_log_pos: 215694531
     login_user: "{{ mysql_root }}"
     login_password: "{{ mysql_root_pass }}"
   register: _replication_conf
