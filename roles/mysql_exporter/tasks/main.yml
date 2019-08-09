@@ -19,7 +19,7 @@
 
 - name: Ensure directories exists
   file:
-    path: "/tmp/mysqld_exporter"
+    path: "/mnt/mysqld_exporter"
     state: directory
     owner: "{{ mysqld_exporter_user }}"
     group: "{{ mysqld_exporter_group }}"
@@ -28,15 +28,15 @@
 - name: download mysql_exporter
   get_url:
     url: https://github.com/prometheus/mysqld_exporter/releases/download/v{{ mysqld_exporter_version }}/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz
-    dest: "/tmp/mysqld_exporter"  
+    dest: "/mnt/mysqld_exporter"  
     owner: "{{ mysqld_exporter_user }}"
     group: "{{ mysqld_exporter_group }}"
     mode: "0664"
 
 - name: unarchive file mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz
   unarchive:
-    src: "/tmp/mysqld_exporter/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz"
-    dest: "/tmp/mysqld_exporter"
+    src: "/mnt/mysqld_exporter/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/mnt/mysqld_exporter"
     owner: "{{ mysqld_exporter_user }}"
     group: "{{ mysqld_exporter_group }}"
     remote_src: yes
@@ -62,7 +62,7 @@
 - name: create file .my.cnf
   template:
     src: "{{ path_home }}/roles/mysql_exporter/templates/my.cnf.j2"
-    dest: "/tmp/mysqld_exporter/.my.cnf"
+    dest: "/mnt/mysqld_exporter/.my.cnf"
     owner: "{{ mysqld_exporter_user }}"
     group: "{{ mysqld_exporter_group }}"
     mode: "0600"

@@ -6,7 +6,7 @@ After=network.target
 User={{ mysqld_exporter_user }}
 Group={{ mysqld_exporter_group }}
 Type=simple
-ExecStart=/tmp/mysqld_exporter/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64/mysqld_exporter \
+ExecStart=/mnt/mysqld_exporter/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64/mysqld_exporter \
 	--config.my-cnf=/tmp/mysqld_exporter/.my.cnf \
 	--collect.global_status \
 	--collect.info_schema.innodb_metrics \
