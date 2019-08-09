@@ -121,7 +121,7 @@
     enabled: yes
 
 - name: Wait for services to be up
-  delegate_to: "{{ master_host }}"
+  # delegate_to: "{{ master_host }}"
   uri:
     url: "{{ item.url }}"
     validate_certs: "{{ item.validate_certs }}"
