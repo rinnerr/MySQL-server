@@ -84,26 +84,26 @@
                                     --keystone-group "{{ keystone_system_group_name }}"
   when: _fernet_keys.stat.exists
 
-- name: Keystone db-sync
-  command: /usr/bin/keystone-manage db_sync
+# - name: Keystone db-sync
+#   command: /usr/bin/keystone-manage db_sync
 
-- name: Bootstrap keystone admin and endpoint
-  command: /usr/bin/keystone-manage bootstrap \
-                      --bootstrap-username "{{ keystone_admin_user_name }}" \
-                      --bootstrap-password "{{ keystone_auth_admin_password }}" \
-                      --bootstrap-project-name "{{ keystone_admin_tenant_name }}" \
-                      --bootstrap-role-name "{{ keystone_role_name }}" \
-                      --bootstrap-service-name "{{ keystone_service_name }}" \
-                      --bootstrap-region-id "{{ keystone_service_region }}" \
-                      --bootstrap-admin-url "{{ keystone_service_adminuri }}" \
-                      --bootstrap-public-url "{{ keystone_service_publicuri }}" \
-                      --bootstrap-internal-url "{{ keystone_service_internaluri }}"
-  no_log: true
-  changed_when: false
-  register: add_service
-  until: add_service is success
-  retries: 5
-  delay: 10
+# - name: Bootstrap keystone admin and endpoint
+#   command: /usr/bin/keystone-manage bootstrap \
+#                       --bootstrap-username "{{ keystone_admin_user_name }}" \
+#                       --bootstrap-password "{{ keystone_auth_admin_password }}" \
+#                       --bootstrap-project-name "{{ keystone_admin_tenant_name }}" \
+#                       --bootstrap-role-name "{{ keystone_role_name }}" \
+#                       --bootstrap-service-name "{{ keystone_service_name }}" \
+#                       --bootstrap-region-id "{{ keystone_service_region }}" \
+#                       --bootstrap-admin-url "{{ keystone_service_adminuri }}" \
+#                       --bootstrap-public-url "{{ keystone_service_publicuri }}" \
+#                       --bootstrap-internal-url "{{ keystone_service_internaluri }}"
+#   no_log: true
+#   changed_when: false
+#   register: add_service
+#   until: add_service is success
+#   retries: 5
+#   delay: 10
 
 # - name: create service keystone-admin
 #   template:
