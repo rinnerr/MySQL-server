@@ -25,7 +25,6 @@ ExecStart=/mnt/mysqld_exporter/mysqld_exporter-{{ mysqld_exporter_version }}.lin
 	--collect.perf_schema.tableiowaits \
 	--collect.engine_innodb_status \
 	--collect.slave_status
-Restart=always
 
 [Install]
 WantedBy=multi-user.target
